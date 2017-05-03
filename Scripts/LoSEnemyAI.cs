@@ -84,9 +84,9 @@ public class LoSEnemyAI : MonoBehaviour
         rayDirection = (player.transform.position - transform.position).normalized;
             if (player)
             {
-            timer2 += Time.deltaTime;
+            timer3 += Time.deltaTime;
             navMeshAgent.speed = maxSpeedValue;
-            if (timer2 >= maxTimerValueOPAi)
+            if (timer3 >= maxTimerValueOPAi)
             {
                 navMeshAgent.speed = maxSpeedValue * 3;
 
