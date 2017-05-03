@@ -15,7 +15,9 @@ public class EnemyAI : MonoBehaviour {
     private NavMeshAgent navMeshAgent;
     public float range_radius = 10;
     public float timer;
+    public float timer2;
     public int maxTimerValue;
+    public int maxTimerValueOPAi;
     private int timerValue;
     public int movementRadius;
     private Vector3 currentPlayerPosition;
@@ -71,11 +73,18 @@ public class EnemyAI : MonoBehaviour {
         }
         if (playerFound)
         {
-                if (player)
+            if (player)
                 {
+                timer2 += Time.deltaTime;
                     navMeshAgent.speed = maxSpeedValue;
                     navMeshAgent.SetDestination(player.position);
+                if (timer2 >= maxTimerValueOPAi)
+                {
+                    navMeshAgent.speed = maxSpeedValue * 3;
+                    
                 }
+
+            }
                 else
                 {
                     if (player = null)

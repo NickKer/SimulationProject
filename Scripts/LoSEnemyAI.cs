@@ -15,8 +15,10 @@ public class LoSEnemyAI : MonoBehaviour
     public float range_radius = 10;
     public float timer;
     public float timer2;
+    public float timer3;
     public int giveUpTime = 5;
     public int maxTimerValue;
+    public int maxTimerValueOPAi;
     private int timerValue;
     public int movementRadius;
     public Vector3 target;
@@ -82,7 +84,13 @@ public class LoSEnemyAI : MonoBehaviour
         rayDirection = (player.transform.position - transform.position).normalized;
             if (player)
             {
+            timer2 += Time.deltaTime;
             navMeshAgent.speed = maxSpeedValue;
+            if (timer2 >= maxTimerValueOPAi)
+            {
+                navMeshAgent.speed = maxSpeedValue * 3;
+
+            }
             Debug.DrawRay(transform.position, player.transform.position - transform.position, Color.red);
                 if (Physics.Raycast(transform.position, player.transform.position - transform.position, out hit))
                 {
