@@ -1,0 +1,10 @@
+*.info
+*.meta
+*.prefs
+GES_Assignment_Connor/Library/**
+GES_Assignment_Connor/ProjectSettings/**
+GES_Assignment_Connor/Temp/**
+GES_Assignment_Connor/GES_Assignment_Connor.sln
+*.csproj
+GES_Assignment_Connor/Assets/Scripts/charcterMove.cs
+GES_Assignment_Connor/Assets/Scripts/MouseLook.cs
