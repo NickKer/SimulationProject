@@ -8,3 +8,5 @@ GES_Assignment_Connor/GES_Assignment_Connor.sln
 *.csproj
 GES_Assignment_Connor/Assets/Scripts/charcterMove.cs
 GES_Assignment_Connor/Assets/Scripts/MouseLook.cs
+GES_Assignment_Connor/Assets/Odds_N_Ends/**
+GES_Assignment_Connor/Assets/StandardAssets/**
