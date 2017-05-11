@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class objectData : MonoBehaviour
 {
-    public float minPercentageFromSideX = 0;
-    public float maxPercentageFromSideX = 100;
-    public float minPercentageFromSideZ = 0;
-    public float maxPercentageFromSideZ = 100;
+    public float[] PercentageLeftRight = new float[2] { 0, 100 };
+    public float[] PercentageUpDown = new float[2] { 0, 100 };
     public int maxAmount = 3;
     public string objectType = "Terrain";
     public float[] objectScale = new float[3] { 1, 1, 1 };

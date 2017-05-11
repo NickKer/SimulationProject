@@ -186,6 +186,8 @@ public class pathObject
     float chance;
     int sideCount = 0;
     string pathType;
+    float[,] limitsX;
+    float[,] limitsZ;
     GameObject _floor;
     GameObject[] _path1;
     GameObject[] _path2;
@@ -193,6 +195,8 @@ public class pathObject
     GameObject[] _path4;
     public int generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject)
     {
+        limitsX = new float[5, 2] { { x - width / 6, x + width / 6 }, { x + width / 6, x + width / 2 }, { x - width / 2, x - width / 6 }, { x - width / 6 + 1f, x + width / 6 - 1f }, { x - width / 6 + 1f, x + width / 6 - 1f } };
+        limitsZ = new float[5, 2] { { z - width / 6, z + width / 6 }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z + width / 6, z + width / 2 }, { z - width / 6, z - width / 2 } };
         _position[0] = x;
         _position[1] = z;
         for (int i = 0; i < 4; i++)
@@ -233,7 +237,6 @@ public class pathObject
             _floor.name = name;
             UnityEngine.AI.NavMeshObstacle tempObstacle;
             _floor.transform.parent = mainObject.transform;
-            generateSpawnables(_floor,spawnables, enemy, friendly, new float[2] { x - width / 6, x + width / 6 }, new float[2] { z - width / 6, z + width / 6 });
 
             if (_sides[2] == true)
             {
@@ -255,20 +258,23 @@ public class pathObject
                 _path1[1].transform.parent = _path1[3].transform;
                 //_path1[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 //_path1[3].transform.parent = _floor.transform;
-                generateSpawnables(_path1[3], spawnables, enemy, friendly, new float[2] { x + width / 6, x + width / 2}, new float[2] { z - width / 6 + 1f, z + width / 6 - 1f });
+                
 
             }
             else
             {
-                _path1 = new GameObject[2];
+                _path1 = new GameObject[3];
                 _path1[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path1[0].transform.position = new Vector3(x + width / 6 + 0.5f, wallHeight / 2, z);
                 _path1[0].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path1[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path1[2] = new GameObject("Path1");
+                _path1[2].transform.position = new Vector3(x + width / 3, 0, z);
+                _path1[2].transform.parent = _floor.transform;
                 _path1[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path1[0].transform.parent = _floor.transform;
-                _path1[1].transform.parent = _floor.transform;
+                _path1[0].transform.parent = _path1[2].transform;
+                _path1[1].transform.parent = _path1[2].transform;
             }
             if (_sides[3] == true)
             {
@@ -290,20 +296,22 @@ public class pathObject
                 _path2[0].transform.parent = _path2[3].transform;
                 _path2[1].transform.parent = _path2[3].transform;
                 // _path2[3].transform.parent = _floor.transform;
-                generateSpawnables(_path2[3], spawnables, enemy, friendly, new float[2] { x - width / 2, x - width / 6 }, new float[2] { z - width / 6 + 1f, z + width / 6 - 1f });
 
             }
             else
             {
-                _path2 = new GameObject[2];
+                _path2 = new GameObject[3];
                 _path2[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[0].transform.position = new Vector3(x - width / 6 - 0.5f, wallHeight / 2, z);
                 _path2[0].transform.localScale = new Vector3(1,wallHeight, width / 3);
                 tempObstacle = _path2[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path2[2] = new GameObject("Path2");
+                _path2[2].transform.position = new Vector3(x - width / 3, 0, z);
+                _path2[2].transform.parent = _floor.transform;
                 _path2[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path2[0].transform.parent = _floor.transform;
-                _path2[1].transform.parent = _floor.transform;
+                _path2[0].transform.parent = _path2[2].transform;
+                _path2[1].transform.parent = _path2[2].transform;
             }
             if (_sides[0] == true)
             {
@@ -325,20 +333,22 @@ public class pathObject
                 _path3[0].transform.parent = _path3[3].transform;
                 _path3[1].transform.parent = _path3[3].transform;
                 //_path3[3].transform.parent = _floor.transform;
-                generateSpawnables(_path3[3], spawnables, enemy, friendly, new float[2] { x - width / 6 + 1f, x + width / 6 - 1f },new float[2] { z + width / 6, z + width / 2 });
 
             }
             else
             {
-                _path3 = new GameObject[2];
+                _path3 = new GameObject[3];
                 _path3[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[0].transform.position = new Vector3(x, wallHeight / 2, z + width / 6 + 0.5f);
                 _path3[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path3[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path3[2] = new GameObject("Path3");
+                _path3[2].transform.position = new Vector3(x, 0, z + width / 3);
+                _path3[2].transform.parent = _floor.transform;
                 _path3[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path3[0].transform.parent = _floor.transform;
-                _path3[1].transform.parent = _floor.transform;
+                _path3[0].transform.parent = _path3[2].transform;
+                _path3[1].transform.parent = _path3[2].transform;
             }
             if (_sides[1] == true)
             {
@@ -360,21 +370,24 @@ public class pathObject
                 _path4[0].transform.parent = _path4[3].transform;
                 _path4[1].transform.parent = _path4[3].transform;
                 //_path4[3].transform.parent = _floor.transform;
-                generateSpawnables(_path4[3], spawnables, enemy, friendly, new float[2] { x - width / 6 + 1f, x + width / 6 - 1f}, new float[2] { z - width / 6, z - width / 2 });
 
             }
             else
             {
-                _path4 = new GameObject[2];
+                _path4 = new GameObject[3];
                 _path4[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[0].transform.position = new Vector3(x, wallHeight / 2, z - width / 6 - 0.5f);
                 _path4[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path4[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path4[2] = new GameObject("Path4");
+                _path4[2].transform.position = new Vector3(x, 0, z - width / 3);
+                _path4[2].transform.parent = _floor.transform;
                 _path4[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path4[0].transform.parent = _floor.transform;
-                _path4[1].transform.parent = _floor.transform;
+                _path4[0].transform.parent = _path4[2].transform;
+                _path4[1].transform.parent = _path4[2].transform;
             }
+            generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ);
         }
         int _neededSides = 0;
         for(int i = 0; i < _sides.Length; i++)
@@ -384,6 +397,7 @@ public class pathObject
                 _neededSides += 1;
             }
         }
+
         return sideCount;
 
     }
@@ -396,12 +410,17 @@ public class pathObject
     {
         //make home
     }
-    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemy,bool friendly,float[] xLimits,float[] zLimits)
+    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemy,bool friendly,float[,] xLimits,float[,] zLimits)
     {
         float chance = UnityEngine.Random.value;
         float xT;
         float zT;
-        if(chance > 0.66)
+        int selectedPath;
+        GameObject path = new GameObject("null");
+        GameObject tempObject;
+        float[] Perleftright = new float[2];
+        float[] Perupdown = new float[2];
+        if (chance > 0.66)
         {
             pathType = "Terrain";
         }else
@@ -423,11 +442,53 @@ public class pathObject
             
             if (current.objectType == "Terrain" || current.objectType == pathType)
             {
-                for(int objects = 0; objects < Random.Range(0.0f, current.maxAmount); objects++)
+                for(int objects = 0; objects < Random.Range(0, current.maxAmount); objects++)
                 {
-                    xT = UnityEngine.Random.Range((xLimits[1] - xLimits[0]) / 2.0f * current.minPercentageFromSideX / 100f, (xLimits[1] - xLimits[0]) / 2.0f * current.maxPercentageFromSideX / 100f);
-                    zT = UnityEngine.Random.Range((zLimits[1] - zLimits[0]) / 2.0f * current.minPercentageFromSideZ / 100f, (zLimits[1] - zLimits[0]) / 2.0f * current.maxPercentageFromSideZ / 100f);
-                    Object.Instantiate(spawnables[spawnArray], parent.transform.position + new Vector3(xT * RandomSign(), 0, zT * RandomSign()), Quaternion.identity, parent.transform);
+                    Perleftright = new float[2];
+                    Perupdown = new float[2];
+                    path = new GameObject();
+                    selectedPath = UnityEngine.Random.Range(0, 4);
+                    if (selectedPath == 1 && _sides[2] == true)
+                    {
+                        System.Array.Copy(current.PercentageUpDown, Perleftright, 2);
+                        System.Array.Copy(current.PercentageLeftRight, Perupdown, 2);
+                        path = _path1[3];
+                    }
+                    else if(selectedPath == 2 && _sides[3] == true)
+                    {
+                        System.Array.Copy(current.PercentageLeftRight, Perupdown, 2);
+                        Perleftright[0] = current.PercentageUpDown[1];
+                        Perleftright[1] = current.PercentageUpDown[0];
+                        path = _path2[3];
+                    }
+                    else if (selectedPath == 3 && _sides[0] == true)
+                    {
+                        System.Array.Copy(current.PercentageLeftRight, Perleftright, 2);
+                        System.Array.Copy(current.PercentageUpDown, Perupdown, 2);
+                        path = _path3[3];
+                    }
+                    else if (selectedPath == 4 && _sides[1] == true)
+                    {
+                        System.Array.Copy(current.PercentageLeftRight, Perleftright, 2);
+                        Perupdown[0] = current.PercentageUpDown[1];
+                        Perupdown[1] = current.PercentageUpDown[0];
+                        path = _path4[3];
+                    }
+                    else if (selectedPath == 0)
+                    {
+                        Perleftright = new float[2] { 0, 100};
+                        Perupdown = new float[2] { 0, 100 };
+                        path = parent;
+                    }
+                    //xT = UnityEngine.Random.Range((xLimits[1] - xLimits[0]) / 2.0f * current.minPercentageFromSideX / 100f, (xLimits[1] - xLimits[0]) / 2.0f * current.maxPercentageFromSideX / 100f);
+                    if (path.name != "")
+                    {
+                        xT = UnityEngine.Random.Range((xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[0] / 100f, (xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[1] / 100f);
+                        zT = UnityEngine.Random.Range((zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[0] / 100f, (zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[1] / 100f);
+
+                        tempObject = Object.Instantiate(spawnables[spawnArray], path.transform.position + new Vector3(xT * RandomSign(), 0, zT * RandomSign()), Quaternion.identity, path.transform);
+                        tempObject.name = xT.ToString() + " " + zT.ToString();
+                    }
                     //Debug.Log(((xLimits[1] - xLimits[0]) / 2.0f).ToString() +" "+ xT.ToString() + " " + parent.name);
                 }
             }

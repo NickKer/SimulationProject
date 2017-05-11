@@ -118,8 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eedd773330f4cc41b119636cf4e7e88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partWidth: 10
-  pathObject: {fileID: 0}
+  partWidth: 20
+  wallHeight: 5
+  spawnableObjects:
+  - {fileID: 1485169869470790, guid: aa89e347d9e7eda46933b437b20342b6, type: 2}
+  homeTree: []
   PathAmount4: 10
   PathAmount3: 15
   PathAmount2: 3000
@@ -315,13 +318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcde6ddbbc0960438a56d7070e8cdcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  axes: 0
-  sensitivityX: 15
-  sensitivityY: 15
-  minimumX: -360
-  maximumX: 360
-  minimumY: -60
-  maximumY: 60
 --- !u!23 &1094198285
 MeshRenderer:
   m_ObjectHideFlags: 0
