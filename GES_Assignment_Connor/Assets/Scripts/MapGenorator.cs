@@ -5,6 +5,8 @@ using UnityEngine;
 public class MapGenorator : MonoBehaviour {
     public float partWidth = 10;
     public float wallHeight = 5;
+    public float terrainChance = 0.66f;
+    public float friendlyChance = 0.33f;
     public GameObject[] spawnableObjects;
     public GameObject[] homeTree;
     public int PathAmount4 = 6;
@@ -44,7 +46,7 @@ public class MapGenorator : MonoBehaviour {
         int pathOutput;
 
         paths[currentPosR, currentPosC] = new pathObject();
-        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject);
+        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject,terrainChance,friendlyChance);
         //currentPositionX += gridx;
         requiredSides = new int[4] { 0, 0, 0, 0 };
         while (mapGenerate == true){
@@ -150,7 +152,7 @@ public class MapGenorator : MonoBehaviour {
                 requiredSides[2] = paths[currentPosR, currentPosC+1].sideNeeded(3);
             }
             paths[currentPosR, currentPosC] = new pathObject();
-            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject);
+            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject,terrainChance,friendlyChance);
             if (pathOutput == 4)
             {
                 path4 += 1;
@@ -193,7 +195,7 @@ public class pathObject
     GameObject[] _path2;
     GameObject[] _path3;
     GameObject[] _path4;
-    public int generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject)
+    public int generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject, float terrainChance, float friendlyChance)
     {
         limitsX = new float[5, 2] { { x - width / 6, x + width / 6 }, { x + width / 6, x + width / 2 }, { x - width / 2, x - width / 6 }, { x - width / 6 + 1f, x + width / 6 - 1f }, { x - width / 6 + 1f, x + width / 6 - 1f } };
         limitsZ = new float[5, 2] { { z - width / 6, z + width / 6 }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z + width / 6, z + width / 2 }, { z - width / 6, z - width / 2 } };
@@ -240,22 +242,24 @@ public class pathObject
 
             if (_sides[2] == true)
             {
-                _path1 = new GameObject[4];
+                _path1 = new GameObject[3];
                 _path1[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path1[0].transform.position = new Vector3(x + width / 3, wallHeight/2, z + width / 6 + 0.5f);
                 _path1[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path1[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path1[0].AddComponent(typeof(BoxCollider));
                 _path1[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path1[1].transform.position = new Vector3(x + width / 3, wallHeight / 2, z - width / 6 - 0.5f);
                 _path1[1].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path1[1].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path1[3] = new GameObject("Path1");
-                _path1[3].transform.position = new Vector3(x + width / 3, 0, z);
-                _path1[3].transform.parent = _floor.transform;
-                _path1[0].transform.parent = _path1[3].transform;
-                _path1[1].transform.parent = _path1[3].transform;
+                _path1[1].AddComponent(typeof(BoxCollider));
+                _path1[2] = new GameObject("Path1");
+                _path1[2].transform.position = new Vector3(x + width / 3, 0, z);
+                _path1[2].transform.parent = _floor.transform;
+                _path1[0].transform.parent = _path1[2].transform;
+                _path1[1].transform.parent = _path1[2].transform;
                 //_path1[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 //_path1[3].transform.parent = _floor.transform;
                 
@@ -263,131 +267,141 @@ public class pathObject
             }
             else
             {
-                _path1 = new GameObject[3];
+                _path1 = new GameObject[2];
                 _path1[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path1[0].transform.position = new Vector3(x + width / 6 + 0.5f, wallHeight / 2, z);
                 _path1[0].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path1[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path1[2] = new GameObject("Path1");
-                _path1[2].transform.position = new Vector3(x + width / 3, 0, z);
-                _path1[2].transform.parent = _floor.transform;
-                _path1[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path1[0].transform.parent = _path1[2].transform;
-                _path1[1].transform.parent = _path1[2].transform;
+                _path1[0].AddComponent(typeof(BoxCollider));
+                _path1[1] = new GameObject("Path1");
+                _path1[1].transform.position = new Vector3(x + width / 3, 0, z);
+                _path1[1].transform.parent = _floor.transform;
+                //_path1[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                _path1[0].transform.parent = _path1[1].transform;
+                //_path1[1].transform.parent = _path1[2].transform;
             }
             if (_sides[3] == true)
             {
-                _path2 = new GameObject[4];
+                _path2 = new GameObject[3];
                 _path2[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[0].transform.position = new Vector3(x - width / 3, wallHeight / 2, z + width / 6 + 0.5f);
                 _path2[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path2[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path2[0].AddComponent(typeof(BoxCollider));
                 _path2[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[1].transform.position = new Vector3(x - width / 3, wallHeight / 2, z - width / 6 - 0.5f);
                 _path2[1].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path2[1].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path2[3] = new GameObject("Path2");
-                _path2[3].transform.position = new Vector3(x - width / 3, 0, z);
-                _path2[3].transform.parent = _floor.transform;
+                _path2[1].AddComponent(typeof(BoxCollider));
+                _path2[2] = new GameObject("Path2");
+                _path2[2].transform.position = new Vector3(x - width / 3, 0, z);
+                _path2[2].transform.parent = _floor.transform;
                 //_path2[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path2[0].transform.parent = _path2[3].transform;
-                _path2[1].transform.parent = _path2[3].transform;
+                _path2[0].transform.parent = _path2[2].transform;
+                _path2[1].transform.parent = _path2[2].transform;
                 // _path2[3].transform.parent = _floor.transform;
 
             }
             else
             {
-                _path2 = new GameObject[3];
+                _path2 = new GameObject[2];
                 _path2[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[0].transform.position = new Vector3(x - width / 6 - 0.5f, wallHeight / 2, z);
                 _path2[0].transform.localScale = new Vector3(1,wallHeight, width / 3);
                 tempObstacle = _path2[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path2[2] = new GameObject("Path2");
-                _path2[2].transform.position = new Vector3(x - width / 3, 0, z);
-                _path2[2].transform.parent = _floor.transform;
-                _path2[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path2[0].transform.parent = _path2[2].transform;
-                _path2[1].transform.parent = _path2[2].transform;
+                _path2[0].AddComponent(typeof(BoxCollider));
+                _path2[1] = new GameObject("Path2");
+                _path2[1].transform.position = new Vector3(x - width / 3, 0, z);
+                _path2[1].transform.parent = _floor.transform;
+                //_path2[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                _path2[0].transform.parent = _path2[1].transform;
+                //_path2[1].transform.parent = _path2[2].transform;
             }
             if (_sides[0] == true)
             {
-                _path3 = new GameObject[4];
+                _path3 = new GameObject[3];
                 _path3[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[0].transform.position = new Vector3(x + width / 6 + 0.5f, wallHeight / 2, z + width / 3);
                 _path3[0].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path3[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path3[0].AddComponent(typeof(BoxCollider));
                 _path3[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[1].transform.position = new Vector3(x - width / 6 - 0.5f, wallHeight / 2, z + width / 3);
                 _path3[1].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path3[1].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path3[3] = new GameObject("Path3");
-                _path3[3].transform.position = new Vector3(x, 0, z + width / 3);
-                _path3[3].transform.parent = _floor.transform;
+                _path3[1].AddComponent(typeof(BoxCollider));
+                _path3[2] = new GameObject("Path3");
+                _path3[2].transform.position = new Vector3(x, 0, z + width / 3);
+                _path3[2].transform.parent = _floor.transform;
                 // _path3[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path3[0].transform.parent = _path3[3].transform;
-                _path3[1].transform.parent = _path3[3].transform;
+                _path3[0].transform.parent = _path3[2].transform;
+                _path3[1].transform.parent = _path3[2].transform;
                 //_path3[3].transform.parent = _floor.transform;
 
             }
             else
             {
-                _path3 = new GameObject[3];
+                _path3 = new GameObject[2];
                 _path3[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[0].transform.position = new Vector3(x, wallHeight / 2, z + width / 6 + 0.5f);
                 _path3[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path3[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path3[2] = new GameObject("Path3");
-                _path3[2].transform.position = new Vector3(x, 0, z + width / 3);
-                _path3[2].transform.parent = _floor.transform;
-                _path3[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path3[0].transform.parent = _path3[2].transform;
-                _path3[1].transform.parent = _path3[2].transform;
+                _path3[0].AddComponent(typeof(BoxCollider));
+                _path3[1] = new GameObject("Path3");
+                _path3[1].transform.position = new Vector3(x, 0, z + width / 3);
+                _path3[1].transform.parent = _floor.transform;
+                //_path3[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                _path3[0].transform.parent = _path3[1].transform;
+               // _path3[1].transform.parent = _path3[2].transform;
             }
             if (_sides[1] == true)
             {
-                _path4 = new GameObject[4];
+                _path4 = new GameObject[3];
                 _path4[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[0].transform.position = new Vector3(x + width / 6 + 0.5f, wallHeight / 2, z - width / 3);
                 _path4[0].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path4[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
+                _path4[0].AddComponent(typeof(BoxCollider));
                 _path4[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[1].transform.position = new Vector3(x - width / 6 - 0.5f, wallHeight / 2, z - width / 3);
                 _path4[1].transform.localScale = new Vector3(1, wallHeight, width / 3);
                 tempObstacle = _path4[1].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path4[3] = new GameObject("Path4");
-                _path4[3].transform.position = new Vector3(x, 0, z - width / 3);
-                _path4[3].transform.parent = _floor.transform;
+                _path4[1].AddComponent(typeof(BoxCollider));
+                _path4[2] = new GameObject("Path4");
+                _path4[2].transform.position = new Vector3(x, 0, z - width / 3);
+                _path4[2].transform.parent = _floor.transform;
                 //_path4[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path4[0].transform.parent = _path4[3].transform;
-                _path4[1].transform.parent = _path4[3].transform;
+                _path4[0].transform.parent = _path4[2].transform;
+                _path4[1].transform.parent = _path4[2].transform;
                 //_path4[3].transform.parent = _floor.transform;
 
             }
             else
             {
-                _path4 = new GameObject[3];
+                _path4 = new GameObject[2];
                 _path4[0] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[0].transform.position = new Vector3(x, wallHeight / 2, z - width / 6 - 0.5f);
                 _path4[0].transform.localScale = new Vector3(width / 3, wallHeight, 1);
                 tempObstacle = _path4[0].AddComponent(typeof(UnityEngine.AI.NavMeshObstacle)) as UnityEngine.AI.NavMeshObstacle;
                 tempObstacle.carving = true;
-                _path4[2] = new GameObject("Path4");
-                _path4[2].transform.position = new Vector3(x, 0, z - width / 3);
-                _path4[2].transform.parent = _floor.transform;
-                _path4[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                _path4[0].transform.parent = _path4[2].transform;
-                _path4[1].transform.parent = _path4[2].transform;
+                _path4[0].AddComponent(typeof(BoxCollider));
+                _path4[1] = new GameObject("Path4");
+                _path4[1].transform.position = new Vector3(x, 0, z - width / 3);
+                _path4[1].transform.parent = _floor.transform;
+                //_path4[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                _path4[0].transform.parent = _path4[1].transform;
+                //_path4[1].transform.parent = _path4[2].transform;
             }
-            generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ);
+            generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ,terrainChance,friendlyChance);
         }
         int _neededSides = 0;
         for(int i = 0; i < _sides.Length; i++)
@@ -410,7 +424,7 @@ public class pathObject
     {
         //make home
     }
-    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemy,bool friendly,float[,] xLimits,float[,] zLimits)
+    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemy,bool friendly,float[,] xLimits,float[,] zLimits,float terrainChance,float friendlyChance)
     {
         float chance = UnityEngine.Random.value;
         float xT;
@@ -420,12 +434,12 @@ public class pathObject
         GameObject tempObject;
         float[] Perleftright = new float[2];
         float[] Perupdown = new float[2];
-        if (chance > 0.66)
+        if (chance > terrainChance)
         {
             pathType = "Terrain";
         }else
         {
-            if(enemy == true & chance > 0.33)
+            if(enemy == true & chance > (1 - terrainChance - friendlyChance))
             {
                 pathType = "Enemy";
             }else if(friendly == true)
@@ -452,27 +466,27 @@ public class pathObject
                     {
                         System.Array.Copy(current.PercentageUpDown, Perleftright, 2);
                         System.Array.Copy(current.PercentageLeftRight, Perupdown, 2);
-                        path = _path1[3];
+                        path = _path1[2];
                     }
                     else if(selectedPath == 2 && _sides[3] == true)
                     {
                         System.Array.Copy(current.PercentageLeftRight, Perupdown, 2);
                         Perleftright[0] = current.PercentageUpDown[1];
                         Perleftright[1] = current.PercentageUpDown[0];
-                        path = _path2[3];
+                        path = _path2[2];
                     }
                     else if (selectedPath == 3 && _sides[0] == true)
                     {
                         System.Array.Copy(current.PercentageLeftRight, Perleftright, 2);
                         System.Array.Copy(current.PercentageUpDown, Perupdown, 2);
-                        path = _path3[3];
+                        path = _path3[2];
                     }
                     else if (selectedPath == 4 && _sides[1] == true)
                     {
                         System.Array.Copy(current.PercentageLeftRight, Perleftright, 2);
                         Perupdown[0] = current.PercentageUpDown[1];
                         Perupdown[1] = current.PercentageUpDown[0];
-                        path = _path4[3];
+                        path = _path4[2];
                     }
                     else if (selectedPath == 0)
                     {
@@ -486,7 +500,7 @@ public class pathObject
                         xT = UnityEngine.Random.Range((xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[0] / 100f, (xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[1] / 100f);
                         zT = UnityEngine.Random.Range((zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[0] / 100f, (zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[1] / 100f);
 
-                        tempObject = Object.Instantiate(spawnables[spawnArray], path.transform.position + new Vector3(xT * RandomSign(), 0, zT * RandomSign()), Quaternion.identity, path.transform);
+                        tempObject = Object.Instantiate(spawnables[spawnArray], path.transform.position + new Vector3(xT * RandomSign(), current.height, zT * RandomSign()), Quaternion.identity, path.transform);
                         tempObject.name = xT.ToString() + " " + zT.ToString();
                     }
                     //Debug.Log(((xLimits[1] - xLimits[0]) / 2.0f).ToString() +" "+ xT.ToString() + " " + parent.name);

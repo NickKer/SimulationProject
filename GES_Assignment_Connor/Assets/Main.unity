@@ -120,6 +120,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partWidth: 20
   wallHeight: 5
+  terrainChance: 0.66
+  friendlyChance: 0.33
   spawnableObjects:
   - {fileID: 1485169869470790, guid: aa89e347d9e7eda46933b437b20342b6, type: 2}
   homeTree: []

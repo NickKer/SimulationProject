@@ -6,6 +6,7 @@ public class objectData : MonoBehaviour
 {
     public float[] PercentageLeftRight = new float[2] { 0, 100 };
     public float[] PercentageUpDown = new float[2] { 0, 100 };
+    public float height = 0f;
     public int maxAmount = 3;
     public string objectType = "Terrain";
     public float[] objectScale = new float[3] { 1, 1, 1 };
