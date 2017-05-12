@@ -5,16 +5,18 @@ using UnityEngine;
 public class MapGenorator : MonoBehaviour {
     public float partWidth = 10;
     public float wallHeight = 5;
-    public float terrainChance = 0.66f;
+    public float enemyChance = 0.66f;
     public float friendlyChance = 0.33f;
+    public int friendlyMaxAmount = 10;
+    public int enemyMaxAmount = 10;
     public GameObject[] spawnableObjects;
     public GameObject[] homeTree;
     public int PathAmount4 = 6;
     public int PathAmount3 = 6;
     public int PathAmount2 = 6;
     public int pathsPerSide = 2;
-    bool enemyAllowed = false;
-    bool friendlyAllowed = false;
+    bool enemyAllowed = true;
+    bool friendlyAllowed = true;
     int path4 = 0;
     int path3 = 0;
     int path2 = 0;
@@ -42,14 +44,23 @@ public class MapGenorator : MonoBehaviour {
         int dirC = 0;
         int dirR = 0;
         int count = 0;
-        int pathCount = 4;
-        int pathOutput;
+        string pathOutput;
+        int enemyCount = 0;
+        int friendlyCount = 0;
 
         paths[currentPosR, currentPosC] = new pathObject();
-        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject,terrainChance,friendlyChance);
+        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject,enemyChance,friendlyChance);
         //currentPositionX += gridx;
         requiredSides = new int[4] { 0, 0, 0, 0 };
         while (mapGenerate == true){
+            if(friendlyCount >= friendlyMaxAmount)
+            {
+                friendlyAllowed = false;
+            }
+            if (enemyCount >= enemyMaxAmount)
+            {
+                enemyAllowed = false;
+            }
             if (layer == 0)
             {
                 layer = 1;
@@ -152,18 +163,15 @@ public class MapGenorator : MonoBehaviour {
                 requiredSides[2] = paths[currentPosR, currentPosC+1].sideNeeded(3);
             }
             paths[currentPosR, currentPosC] = new pathObject();
-            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject,terrainChance,friendlyChance);
-            if (pathOutput == 4)
+            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject,enemyChance,friendlyChance);
+            if (pathOutput == "Friendly")
             {
-                path4 += 1;
-            }else if (pathOutput == 3)
-            {
-                path3 += 1;
-            }else if (pathOutput == 2)
-            {
-                path2 += 1;
+                friendlyCount += 1;
             }
-            pathCount += pathOutput;
+            else if (pathOutput == "Enemy")
+            {
+                enemyCount += 1;
+            }
             //Debug.Log(" ");
             //Debug.Log(paths[currentPosC+1, currentPosR]);
             //Debug.Log(paths[currentPosC-1, currentPosR]);
@@ -195,7 +203,7 @@ public class pathObject
     GameObject[] _path2;
     GameObject[] _path3;
     GameObject[] _path4;
-    public int generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject, float terrainChance, float friendlyChance)
+    public string generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject, float enemyChance, float friendlyChance)
     {
         limitsX = new float[5, 2] { { x - width / 6, x + width / 6 }, { x + width / 6, x + width / 2 }, { x - width / 2, x - width / 6 }, { x - width / 6 + 1f, x + width / 6 - 1f }, { x - width / 6 + 1f, x + width / 6 - 1f } };
         limitsZ = new float[5, 2] { { z - width / 6, z + width / 6 }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z + width / 6, z + width / 2 }, { z - width / 6, z - width / 2 } };
@@ -401,18 +409,11 @@ public class pathObject
                 _path4[0].transform.parent = _path4[1].transform;
                 //_path4[1].transform.parent = _path4[2].transform;
             }
-            generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ,terrainChance,friendlyChance);
-        }
-        int _neededSides = 0;
-        for(int i = 0; i < _sides.Length; i++)
-        {
-            if (sidesRequired[i] == 2)
-            {
-                _neededSides += 1;
-            }
+            generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ,enemyChance,friendlyChance);
         }
 
-        return sideCount;
+
+        return pathType;
 
     }
 
@@ -424,7 +425,7 @@ public class pathObject
     {
         //make home
     }
-    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemy,bool friendly,float[,] xLimits,float[,] zLimits,float terrainChance,float friendlyChance)
+    public void generateSpawnables(GameObject parent,GameObject[] spawnables,bool enemyAllowed,bool friendlyAllowed,float[,] xLimits,float[,] zLimits,float enemyChance,float friendlyChance)
     {
         float chance = UnityEngine.Random.value;
         float xT;
@@ -434,21 +435,15 @@ public class pathObject
         GameObject tempObject;
         float[] Perleftright = new float[2];
         float[] Perupdown = new float[2];
-        if (chance > terrainChance)
+        if(chance < enemyChance && enemyAllowed == true)
         {
-            pathType = "Terrain";
+            pathType = "Enemy";
+        }else if(chance < enemyChance + friendlyChance && friendlyAllowed == true)
+        {
+            pathType = "Friendly";
         }else
         {
-            if(enemy == true & chance > (1 - terrainChance - friendlyChance))
-            {
-                pathType = "Enemy";
-            }else if(friendly == true)
-            {
-                pathType = "Friendly";
-            }else
-            {
-                pathType = "Terrain";
-            }
+            pathType = "Terrain";
         }
         for (int spawnArray = 0;spawnArray < spawnables.Length;spawnArray++)
         {

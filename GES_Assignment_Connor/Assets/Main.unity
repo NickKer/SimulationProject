@@ -122,8 +122,12 @@ MonoBehaviour:
   wallHeight: 5
   terrainChance: 0.66
   friendlyChance: 0.33
+  friendlyMaxAmount: 50
+  enemyMaxAmount: 0
   spawnableObjects:
   - {fileID: 1485169869470790, guid: aa89e347d9e7eda46933b437b20342b6, type: 2}
+  - {fileID: 1728453143419572, guid: 95d4968ba585dcb41a39811cfd7bc42e, type: 2}
+  - {fileID: 1648599109957460, guid: 4484c0b49590d324fbd5390cbce0fe25, type: 2}
   homeTree: []
   PathAmount4: 10
   PathAmount3: 15
