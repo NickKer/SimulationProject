@@ -15,6 +15,7 @@ public class MapGenorator : MonoBehaviour {
     public int PathAmount3 = 6;
     public int PathAmount2 = 6;
     public int pathsPerSide = 2;
+    public Texture[] wallTextures;
     bool enemyAllowed = true;
     bool friendlyAllowed = true;
     int path4 = 0;
@@ -49,7 +50,7 @@ public class MapGenorator : MonoBehaviour {
         int friendlyCount = 0;
 
         paths[currentPosR, currentPosC] = new pathObject();
-        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject,enemyChance,friendlyChance);
+        paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides, maxSides,homeTree, false, false, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(),gameObject,enemyChance,friendlyChance,wallTextures);
         //currentPositionX += gridx;
         requiredSides = new int[4] { 0, 0, 0, 0 };
         while (mapGenerate == true){
@@ -163,7 +164,7 @@ public class MapGenorator : MonoBehaviour {
                 requiredSides[2] = paths[currentPosR, currentPosC+1].sideNeeded(3);
             }
             paths[currentPosR, currentPosC] = new pathObject();
-            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject,enemyChance,friendlyChance);
+            pathOutput = paths[currentPosR, currentPosC].generate(currentPositionX, currentPositionZ,partWidth,wallHeight,requiredSides,maxSides,spawnableObjects,enemyAllowed,friendlyAllowed, "row: " + currentPosR.ToString() + " col: " + currentPosC.ToString(), gameObject,enemyChance,friendlyChance,wallTextures);
             if (pathOutput == "Friendly")
             {
                 friendlyCount += 1;
@@ -203,7 +204,7 @@ public class pathObject
     GameObject[] _path2;
     GameObject[] _path3;
     GameObject[] _path4;
-    public string generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject, float enemyChance, float friendlyChance)
+    public string generate(float x, float z,float width,float wallHeight,int[] sidesRequired,int maxSides, GameObject[] spawnables, bool enemy, bool friendly, string name,GameObject mainObject, float enemyChance, float friendlyChance,Texture[] wallTextures)
     {
         limitsX = new float[5, 2] { { x - width / 6, x + width / 6 }, { x + width / 6, x + width / 2 }, { x - width / 2, x - width / 6 }, { x - width / 6 + 1f, x + width / 6 - 1f }, { x - width / 6 + 1f, x + width / 6 - 1f } };
         limitsZ = new float[5, 2] { { z - width / 6, z + width / 6 }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z - width / 6 + 1f, z + width / 6 - 1f }, { z + width / 6, z + width / 2 }, { z - width / 6, z - width / 2 } };
@@ -242,9 +243,8 @@ public class pathObject
         }
         if (sideCount != 0)
         {
-            _floor = new GameObject();
+            _floor = new GameObject(name);
             _floor.transform.position = new Vector3(x, 0, z);
-            _floor.name = name;
             UnityEngine.AI.NavMeshObstacle tempObstacle;
             _floor.transform.parent = mainObject.transform;
 
@@ -268,6 +268,7 @@ public class pathObject
                 _path1[2].transform.parent = _floor.transform;
                 _path1[0].transform.parent = _path1[2].transform;
                 _path1[1].transform.parent = _path1[2].transform;
+                addTextures(_path1, wallTextures);
                 //_path1[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 //_path1[3].transform.parent = _floor.transform;
                 
@@ -287,6 +288,7 @@ public class pathObject
                 _path1[1].transform.parent = _floor.transform;
                 //_path1[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path1[0].transform.parent = _path1[1].transform;
+                addTextures(_path1, wallTextures);
                 //_path1[1].transform.parent = _path1[2].transform;
             }
             if (_sides[3] == true)
@@ -310,6 +312,7 @@ public class pathObject
                 //_path2[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[0].transform.parent = _path2[2].transform;
                 _path2[1].transform.parent = _path2[2].transform;
+                addTextures(_path2, wallTextures);
                 // _path2[3].transform.parent = _floor.transform;
 
             }
@@ -327,6 +330,7 @@ public class pathObject
                 _path2[1].transform.parent = _floor.transform;
                 //_path2[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path2[0].transform.parent = _path2[1].transform;
+                addTextures(_path2, wallTextures);
                 //_path2[1].transform.parent = _path2[2].transform;
             }
             if (_sides[0] == true)
@@ -350,6 +354,7 @@ public class pathObject
                 // _path3[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[0].transform.parent = _path3[2].transform;
                 _path3[1].transform.parent = _path3[2].transform;
+                addTextures(_path3, wallTextures);
                 //_path3[3].transform.parent = _floor.transform;
 
             }
@@ -367,7 +372,8 @@ public class pathObject
                 _path3[1].transform.parent = _floor.transform;
                 //_path3[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path3[0].transform.parent = _path3[1].transform;
-               // _path3[1].transform.parent = _path3[2].transform;
+                addTextures(_path3, wallTextures);
+                // _path3[1].transform.parent = _path3[2].transform;
             }
             if (_sides[1] == true)
             {
@@ -390,6 +396,7 @@ public class pathObject
                 //_path4[3] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[0].transform.parent = _path4[2].transform;
                 _path4[1].transform.parent = _path4[2].transform;
+                addTextures(_path4, wallTextures);
                 //_path4[3].transform.parent = _floor.transform;
 
             }
@@ -407,6 +414,7 @@ public class pathObject
                 _path4[1].transform.parent = _floor.transform;
                 //_path4[1] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 _path4[0].transform.parent = _path4[1].transform;
+                addTextures(_path4, wallTextures);
                 //_path4[1].transform.parent = _path4[2].transform;
             }
             generateSpawnables(_floor, spawnables, enemy, friendly, limitsX, limitsZ,enemyChance,friendlyChance);
@@ -420,6 +428,21 @@ public class pathObject
     public float[] position()
     {
         return _position;
+    }
+    public void addTextures(GameObject[] objects, Texture[] textures)
+    {
+        Renderer renderer;
+        if (textures.Length > 0)
+        {
+            for (int currentObject = 0; currentObject < objects.Length; currentObject++)
+            {
+                renderer = objects[currentObject].GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material.SetTexture("_MainTex", textures[Random.Range(0, textures.Length - 1)]);
+                }
+            }
+        }
     }
     public void setHomeTree()
     {
