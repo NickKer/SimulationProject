@@ -1,0 +1,29 @@
+Initialize engine version: 5.5.1f1 (88d00a7498cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1070 (ID=0x1b81)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   21.21.13.7866
+Begin MonoManager ReloadAssembly
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.124 seconds
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: F:\Users\NicholasKershaw\Documents\University\2017\CP3408\Workshops\Roll a Ball\Build\Roll A Ball (Windows)_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 75Hz; virtual: 3600x1117 at -1680,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.247714 ms
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: e34 -> priority: 1 
