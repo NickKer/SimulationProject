@@ -120,10 +120,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   partWidth: 20
   wallHeight: 5
-  terrainChance: 0.66
-  friendlyChance: 0.33
+  enemyChance: 0.2
+  friendlyChance: 0.1
   friendlyMaxAmount: 50
-  enemyMaxAmount: 0
+  enemyMaxAmount: 50
   spawnableObjects:
   - {fileID: 1485169869470790, guid: aa89e347d9e7eda46933b437b20342b6, type: 2}
   - {fileID: 1728453143419572, guid: 95d4968ba585dcb41a39811cfd7bc42e, type: 2}
@@ -131,8 +131,10 @@ MonoBehaviour:
   homeTree: []
   PathAmount4: 10
   PathAmount3: 15
-  PathAmount2: 3000
-  pathsPerSide: 10
+  PathAmount2: 300
+  pathsPerSide: 20
+  wallTextures:
+  - {fileID: 2800000, guid: 4cc94b693e53a374cb78326d3766daad, type: 3}
 --- !u!4 &747827132
 Transform:
   m_ObjectHideFlags: 0

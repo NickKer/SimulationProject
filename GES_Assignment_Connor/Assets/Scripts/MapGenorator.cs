@@ -454,7 +454,7 @@ public class pathObject
         float xT;
         float zT;
         int selectedPath;
-        GameObject path = new GameObject("null");
+        GameObject path;
         GameObject tempObject;
         float[] Perleftright = new float[2];
         float[] Perupdown = new float[2];
@@ -478,7 +478,6 @@ public class pathObject
                 {
                     Perleftright = new float[2];
                     Perupdown = new float[2];
-                    path = new GameObject();
                     selectedPath = UnityEngine.Random.Range(0, 4);
                     if (selectedPath == 1 && _sides[2] == true)
                     {
@@ -506,22 +505,18 @@ public class pathObject
                         Perupdown[1] = current.PercentageUpDown[0];
                         path = _path4[2];
                     }
-                    else if (selectedPath == 0)
+                    else
                     {
                         Perleftright = new float[2] { 0, 100};
                         Perupdown = new float[2] { 0, 100 };
                         path = parent;
                     }
-                    //xT = UnityEngine.Random.Range((xLimits[1] - xLimits[0]) / 2.0f * current.minPercentageFromSideX / 100f, (xLimits[1] - xLimits[0]) / 2.0f * current.maxPercentageFromSideX / 100f);
-                    if (path.name != "")
-                    {
-                        xT = UnityEngine.Random.Range((xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[0] / 100f, (xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[1] / 100f);
-                        zT = UnityEngine.Random.Range((zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[0] / 100f, (zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[1] / 100f);
 
-                        tempObject = Object.Instantiate(spawnables[spawnArray], path.transform.position + new Vector3(xT * RandomSign(), current.height, zT * RandomSign()), Quaternion.identity, path.transform);
-                        tempObject.name = xT.ToString() + " " + zT.ToString();
-                    }
-                    //Debug.Log(((xLimits[1] - xLimits[0]) / 2.0f).ToString() +" "+ xT.ToString() + " " + parent.name);
+                    xT = UnityEngine.Random.Range((xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[0] / 100f, (xLimits[selectedPath, 1] - xLimits[selectedPath, 0]) / 2.0f * Perleftright[1] / 100f);
+                    zT = UnityEngine.Random.Range((zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[0] / 100f, (zLimits[selectedPath, 1] - zLimits[selectedPath, 0]) / 2.0f * Perupdown[1] / 100f);
+
+                    tempObject = Object.Instantiate(spawnables[spawnArray], path.transform.position + new Vector3(xT * RandomSign(), current.height, zT * RandomSign()), Quaternion.identity, path.transform);
+                    tempObject.name = xT.ToString() + " " + zT.ToString();
                 }
             }
             
