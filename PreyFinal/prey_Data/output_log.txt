@@ -1,0 +1,58 @@
+Initialize engine version: 5.6.0f3 (497a0f351392)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1070 (ID=0x1b81)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   22.21.13.8233
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.019 seconds
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Nick\Documents\SimulationProject\PreyFinal\prey_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 75Hz; virtual: 3600x1117 at -1680,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.159798 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 98c -> priority: 1 
+  Thread -> id: dcc -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.523338 ms
+
+Unloading 44 unused Assets to reduce memory usage. Loaded Objects now: 2445.
+Total: 0.990126 ms (FindLiveObjects: 0.104240 ms CreateObjectMapping: 0.103920 ms MarkObjects: 0.450320 ms  DeleteObjects: 0.331004 ms)
+
+0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+work
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Paths Generated: 24
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Paths 4: 0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Paths 3: 0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Paths 2: 0
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
